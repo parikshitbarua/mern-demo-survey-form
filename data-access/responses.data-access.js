@@ -1,11 +1,12 @@
-import getDb from "../connections/db.connection.js";
+import Response from "../models/response.model.js";
 
 export const getResponsesForSurvey = async (surveyId) => {
-    console.log("surveyId", surveyId);
-    const db = getDb();
-    return await db
-        .db()
-        .collection('responses')
-        .find({ surveyId: surveyId })
-        .toArray();
+    try {
+        return await Response
+            .find({ surveyId: surveyId })
+    } catch(err) {
+        console.log("Failed to get responses for the survey", err);
+        throw Error("Failed to get responses for the survey" + err);
+    }
+
 }
