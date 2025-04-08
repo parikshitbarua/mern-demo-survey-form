@@ -1,19 +1,35 @@
-import mongodb from "mongodb";
-
-const MongoClient = mongodb.MongoClient;
+import mongoose from "mongoose";
+// import mongodb from "mongodb";
+//
+// const MongoClient = mongodb.MongoClient;
 
 let _db;
 
+// const initDb = async () => {
+//     if (_db) {
+//         console.log("Db is already initialized!");
+//         return _db;
+//     }
+//     try {
+//         _db = await MongoClient.connect('mongodb://127.0.0.1:27017/survey?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.4.2');
+//         return _db;
+//     } catch (err) {
+//         console.log("Error connecting with DB", err);
+//         return null;
+//     }
+// }
+
 const initDb = async () => {
     if (_db) {
-        console.log("Db is already initialized!");
+        console.log("Db is already initialized");
         return _db;
     }
     try {
-        _db = await MongoClient.connect('mongodb://127.0.0.1:27017/survey?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.4.2');
+        _db = await mongoose.connect('mongodb://127.0.0.1:27017/survey?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.4.2');
+        console.log("Db Connected Successfully");
         return _db;
     } catch (err) {
-        console.log("Error connecting with DB", err);
+        console.log("Error connecting to the db", err);
         return null;
     }
 }

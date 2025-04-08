@@ -1,18 +1,21 @@
-import getDb from "../connections/db.connection.js";
+import Question from "../models/question.model.js"
 
 export const addQuestionsForSurvey = async (questions) => {
-    const db = getDb();
-    return await db
-        .db()
-        .collection('questions')
-        .insertMany(questions);
+    try {
+        return await Question.insertMany(questions);
+    } catch(err) {
+        console.log("Error inserting questions for survey.", err);
+        return null;
+    }
 }
 
 export const getSurveyQuestions = async (surveyId) => {
-    const db = getDb();
-    return await db
-        .db()
-        .collection('questions')
-        .find({ surveyId: surveyId})
-        .toArray();
+    try {
+        return await Question
+            .find({ surveyId: surveyId})
+    } catch(err) {
+        console.log("Failed to get Survey Questions", err);
+        throw Error("Failed to get survey questions");
+    }
+
 }

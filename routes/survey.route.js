@@ -1,5 +1,5 @@
 import { Router } from "express";
-import mongodb from "mongodb";
+import mongoose from "mongoose";
 
 import { formatSurveyQuestionsForCreation } from "../utils/format-survey-details.util.js";
 import { formatSurveyResponses } from "../utils/format-survey-responses.util.js";
@@ -7,8 +7,13 @@ import { addNewSurvey, addSurveyResponses } from "../data-access/surveys.data-ac
 import { addQuestionsForSurvey } from "../data-access/questions.data-access.js";
 import { getSurveyResults } from "../utils/get-survey-results.util.js";
 
-const ObjectId = mongodb.ObjectId;
 const router = Router();
+
+router.get('/', (req, res) => {
+    res.status(200).send({
+        message: "Hello"
+    })
+})
 
 // add a new survey
 router.post('/', async (req, res) => {
@@ -26,11 +31,31 @@ router.post('/', async (req, res) => {
             })
         }
 
-        const { insertedId: surveyId } = await addNewSurvey(surveyName);
+        const { _id: surveyId } = await addNewSurvey(surveyName);
+
+        if (surveyId == null) {
+            res.status(500).send({
+                success: false,
+                message: "Error occured while adding a new survey",
+                survey_id: null,
+                surveyName: null,
+                questions: null
+            });
+        }
 
         const surveyQuestions = formatSurveyQuestionsForCreation(surveyId, questions);
 
-        await addQuestionsForSurvey(surveyQuestions);
+        const addQuestionsRes = await addQuestionsForSurvey(surveyQuestions);
+
+        if (addQuestionsRes == null) {
+            res.status(500).send({
+                success: false,
+                message: "Error occured while adding a new survey",
+                survey_id: null,
+                surveyName: null,
+                questions: null
+            });
+        }
 
         res.status(201).send({
             survey_id : surveyId.toString(),
@@ -57,7 +82,7 @@ router.post('/', async (req, res) => {
 // add survey responses
 router.post('/:id', async (req, res) => {
     try {
-        const surveyId = new ObjectId(req.params.id);
+        const surveyId = new mongoose.Types.ObjectId(req.params.id);
         const surveyResponses = req.body;
 
         const formattedResponses = await formatSurveyResponses(surveyId, surveyResponses);
@@ -67,7 +92,6 @@ router.post('/:id', async (req, res) => {
             success: true
         })
     } catch(err) {
-        console.log("Error while adding survey responses", err);
         res.status(500).send({
             success: false,
             message: "Error while adding survey responses: " + err,
@@ -78,7 +102,7 @@ router.post('/:id', async (req, res) => {
 // get survey results
 router.get('/:id/results', async (req, res) => {
     try {
-        const surveyId = new ObjectId(req.params.id);
+        const surveyId = new mongoose.Types.ObjectId(req.params.id);
         const results = await getSurveyResults(surveyId);
 
         res.status(200).send(results);

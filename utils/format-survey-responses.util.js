@@ -4,7 +4,6 @@ import { v4 as uuidv4 } from 'uuid';
 export const formatSurveyResponses = async (surveyId, responses) => {
     const surveyResponseId = uuidv4();
     const surveyQuestions = await getSurveyQuestions(surveyId);
-    console.log("surveyQuestions", surveyQuestions);
 
     if (surveyQuestions.length === 0) {
         throw Error("No questions found for the given survey");
