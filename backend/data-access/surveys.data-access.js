@@ -11,6 +11,17 @@ export const addNewSurvey = async (surveyName) => {
     }
 }
 
+export const getAllSurveys = async () => {
+    try {
+        return await Survey
+            .find();
+    } catch(err) {
+        console.log("Failed to fetch all surveys");
+        throw Error("Failed to fetch all surveys" + err);
+    }
+
+}
+
 export const getSurvey = async (surveyId) => {
     try {
         return await Survey

@@ -68,3 +68,25 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+- Header
+  - Name 
+  - Create Button
+- Body
+  - Browse
+    - Cards
+      - Title
+      - Description
+      - Take Survey Button
+      - View Results Button
+  - Answer Survey
+    - Survey Questions
+    - Yes or No Button
+    - Submit Survey
+  - View Survey Results
+    - Total Responses
+    - Total Yes
+    - Total No
+    - Questions
+    - Question wise yes and no

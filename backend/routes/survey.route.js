@@ -3,8 +3,8 @@ import mongoose from "mongoose";
 
 import { formatSurveyQuestionsForCreation } from "../utils/format-survey-details.util.js";
 import { formatSurveyResponses } from "../utils/format-survey-responses.util.js";
-import { addNewSurvey, addSurveyResponses } from "../data-access/surveys.data-access.js";
-import { addQuestionsForSurvey } from "../data-access/questions.data-access.js";
+import { addNewSurvey, addSurveyResponses, getAllSurveys } from "../data-access/surveys.data-access.js";
+import {addQuestionsForSurvey, getSurveyQuestions} from "../data-access/questions.data-access.js";
 import { getSurveyResults } from "../utils/get-survey-results.util.js";
 
 const router = Router();
@@ -82,7 +82,7 @@ router.post('/', async (req, res) => {
 // add survey responses
 router.post('/:id', async (req, res) => {
     try {
-        const surveyId = new mongoose.Types.ObjectId(req.params.id);
+        const surveyId = new mongoose.Types.ObjectId(req.params.id.substring(1));
         const surveyResponses = req.body;
 
         const formattedResponses = await formatSurveyResponses(surveyId, surveyResponses);
@@ -102,7 +102,7 @@ router.post('/:id', async (req, res) => {
 // get survey results
 router.get('/:id/results', async (req, res) => {
     try {
-        const surveyId = new mongoose.Types.ObjectId(req.params.id);
+        const surveyId = new mongoose.Types.ObjectId(req.params.id.substring(1));
         const results = await getSurveyResults(surveyId);
 
         res.status(200).send(results);
@@ -114,5 +114,36 @@ router.get('/:id/results', async (req, res) => {
         })
     }
 });
+
+// get all surveys
+router.get('/getSurveys', async (req, res) => {
+    try {
+        const allSurveys =  await getAllSurveys();
+        res.status(200).send({
+            data: allSurveys
+        });
+    } catch (err) {
+        res.status(500).send({
+            success: false,
+            message: "Error while getting survey results: " + err,
+        })
+    }
+})
+
+router.get('/getSurveyQuestions/:id', async (req, res) => {
+    try {
+        const surveyId = new mongoose.Types.ObjectId(req.params.id.substring(1));
+        const surveyQuestions = await getSurveyQuestions(surveyId);
+        res.status(200).send({
+            data: surveyQuestions
+        })
+    } catch(err) {
+        console.log(err);
+        res.status(500).send({
+            success: false,
+            message: "Error while getting survey results: " + err,
+        })
+    }
+})
 
 export default router;
