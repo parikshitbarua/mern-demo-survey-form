@@ -130,6 +130,7 @@ router.get('/getSurveys', async (req, res) => {
     }
 })
 
+//get survey questions
 router.get('/getSurveyQuestions/:id', async (req, res) => {
     try {
         const surveyId = new mongoose.Types.ObjectId(req.params.id.substring(1));

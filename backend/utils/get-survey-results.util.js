@@ -4,7 +4,6 @@ import { getSurveyQuestions } from "../data-access/questions.data-access.js";
 
 export const getSurveyResults = async (surveyId) => {
     const surveyDetails = await getSurvey(surveyId);
-    console.log("surveyDetails", surveyDetails);
     const surveyQuestions = await getSurveyQuestions(surveyId);
     const surveyResponses = await getResponsesForSurvey(surveyId);
     const { overAllDetails, breakUpDetails} = calculateSurveyResults(surveyDetails, surveyQuestions, surveyResponses);

@@ -14,9 +14,22 @@ export const fetchSurveyQuestions = async (surveyId, setter) => {
     try {
         const res =  await fetch(`${API_URL}/getSurveyQuestions/${surveyId}`);
         const json = await res.json();
-        console.log(json.data);
         setter(json.data);
     } catch(err) {
         console.log("Error in fetching questions", err);
+    }
+}
+
+export const submitSurvey = async(surveyId, payload) => {
+    const res = await fetch(`${API_URL}/${surveyId}`, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (!data?.success) {
+        throw Error(data?.message)
     }
 }

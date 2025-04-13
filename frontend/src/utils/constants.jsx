@@ -22,3 +22,14 @@ export const data = [
 ];
 
 export const API_URL = "http://localhost:8080/v1/survey";
+
+export const TOAST_CONFIG = {
+    position: "top-right",
+    autoClose: 2500,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "dark",
+}

@@ -1,11 +1,20 @@
 import Express from "express";
 import bodyParser from "body-parser";
+import cors from "cors";
 
 import surveyRouter from "./routes/survey.route.js";
 import { initDb } from "./connections/db.connection.js";
 
 const app = Express();
 app.use(bodyParser.json());
+
+app.use(cors({
+    optionsSuccessStatus: 200,
+    origin: (origin, callback) => {
+        return callback(null, true);
+    },
+    credentials: true
+}));
 
 app.use('/v1/survey', surveyRouter);
 
