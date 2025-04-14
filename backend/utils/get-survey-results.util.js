@@ -34,7 +34,6 @@ const calculateSurveyResults = (surveyDetails, surveyQuestions, surveyResponses)
         const parentQuestion = surveyQuestions.find((question) => {
             return question._id.toString() === response.parentQuestionId.toString();
         });
-        console.log(parentQuestion);
         const detail = breakUpDetails.find(detail => detail != null ? detail.questionId === parentQuestion.questionId : null);
         if(!detail) {
             breakUpDetails.push({

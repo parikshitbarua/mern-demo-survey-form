@@ -19,19 +19,20 @@ router.get('/', (req, res) => {
 router.post('/', async (req, res) => {
     try {
         const surveyName = req.body.surveyName;
+        const description = req.body.surveyDescription;
         const questions = req.body.questions;
 
         if (!surveyName || questions?.length < 1) {
             res.status(400).send({
                 success: false,
-                message: "Ivalid request body",
+                message: "Invalid request body",
                 survey_id: null,
                 surveyName: null,
                 questions: null
             })
         }
 
-        const { _id: surveyId } = await addNewSurvey(surveyName);
+        const { _id: surveyId } = await addNewSurvey(surveyName, description);
 
         if (surveyId == null) {
             res.status(500).send({

@@ -1,9 +1,12 @@
 import Survey from "../models/survey.model.js";
 import Response from "../models/response.model.js";
 
-export const addNewSurvey = async (surveyName) => {
+export const addNewSurvey = async (surveyName, description) => {
     try {
-        const newSurvey = new Survey({surveyName});
+        const newSurvey = new Survey({
+            surveyName,
+            description
+        });
         return await newSurvey.save();
     } catch(err) {
         console.log("Error creating a new survey.", err);

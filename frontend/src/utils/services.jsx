@@ -20,6 +20,23 @@ export const fetchSurveyQuestions = async (surveyId, setter) => {
     }
 }
 
+export const addNewSurveyService = async (payload) => {
+    try {
+        const res = await fetch(`${API_URL}`, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        });
+        const json = await res.json();
+        return json.survey_id;
+    } catch (err) {
+        console.log(err);
+        return false;
+    }
+}
+
 export const submitSurvey = async(surveyId, payload) => {
     const res = await fetch(`${API_URL}/${surveyId}`, {
         method: "POST",

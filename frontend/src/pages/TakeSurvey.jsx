@@ -14,6 +14,7 @@ const TakeSurvey = () => {
     const [error, setError] = useState("");
 
     useEffect(() => {
+        console.log("surveyId", surveyId);
         fetchSurveyQuestions(surveyId, setSurveyQuestions);
     }, []);
 
@@ -78,7 +79,9 @@ const TakeSurvey = () => {
                 <button
                     className="m-10 bg-cyan-500 rounded-2xl"
                     onClick={ (e) => handleFormSubmit(e) }
-                >Submit</button>
+                >
+                    <div className="px-4">Submit</div>
+                </button>
             </form>
             { error.length > 0 &&
                 (<div className="text-red-500 m-6 p-4">

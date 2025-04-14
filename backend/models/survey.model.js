@@ -4,6 +4,10 @@ const surveySchema = new Schema({
     surveyName: {
         type: Schema.Types.String,
         required: true
+    },
+    description: {
+        type: Schema.Types.String,
+        required: true
     }
 });
 

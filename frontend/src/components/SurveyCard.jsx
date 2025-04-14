@@ -7,10 +7,14 @@ const SurveyCard = ({ cardData }) => {
             <div className="pt-5">This survey is about lorem ipsum donor cant details about the test</div>
             <div className="mt-4 flex justify-between">
                 <Link to={`/take-survey/:${cardData._id}`}>
-                    <button className="m-2 bg-cyan-500 rounded-2xl">Take Survey</button>
+                    <button className="m-2 bg-cyan-500 rounded-2xl">
+                        <div className="px-4">Take Survey</div>
+                    </button>
                 </Link>
                 <Link className="w-1/2" to={`/survey-results/:${cardData._id}`}>
-                    <button className="m-2 bg-cyan-500 rounded-2xl">See Results</button>
+                    <button className="m-2 bg-cyan-500 rounded-2xl">
+                        <div className="px-4">See Results</div>
+                    </button>
                 </Link>
             </div>
 

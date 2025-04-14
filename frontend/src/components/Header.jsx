@@ -7,7 +7,9 @@ const Header = () => {
                 <Link to="/">
                     <p className="text-4xl font-semibold p-2 m-2">EZSurveys</p>
                 </Link>
-                <button className="m-2 p-4 bg-cyan-500 rounded-2xl">Create +</button>
+                <Link to="/create">
+                    <button className="m-2 p-4 bg-cyan-500 rounded-2xl">Create +</button>
+                </Link>
             </div>
         </div>
     )
