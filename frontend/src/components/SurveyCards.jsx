@@ -10,12 +10,13 @@ const SurveyCards = () => {
     },[]);
 
     return (
-        <div className="ml-20 flex-nowrap justify-evenly">
-            { cardDetails.map((cardData) =>
-                (<SurveyCard key={cardData._id} cardData={cardData} />)
-            )}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-6 px-4 py-8 justify-items-center min-h-screen bg-gray-50">
+        {cardDetails.map((cardData) => (
+                <SurveyCard key={cardData._id} cardData={cardData} />
+            ))}
         </div>
-    )
+    );
+
 }
 
 export default SurveyCards;

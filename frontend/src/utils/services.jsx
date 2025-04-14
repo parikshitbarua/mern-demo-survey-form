@@ -12,7 +12,7 @@ export const fetchCardDetails = async (setter) => {
 
 export const fetchSurveyQuestions = async (surveyId, setter) => {
     try {
-        const res =  await fetch(`${API_URL}/getSurveyQuestions/${surveyId}`);
+        const res =  await fetch(`${API_URL}/getSurveyQuestions/:${surveyId}`);
         const json = await res.json();
         setter(json.data);
     } catch(err) {
@@ -38,7 +38,7 @@ export const addNewSurveyService = async (payload) => {
 }
 
 export const submitSurvey = async(surveyId, payload) => {
-    const res = await fetch(`${API_URL}/${surveyId}`, {
+    const res = await fetch(`${API_URL}/:${surveyId}`, {
         method: "POST",
         headers: {
             'Content-Type': 'application/json'

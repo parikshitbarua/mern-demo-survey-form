@@ -31,6 +31,10 @@ const CreateSurvey = () => {
     const removeQuestion = (index) => {
         setQuestions((prevState) => {
             const questions = [...prevState];
+            if (questions.length === 1) {
+                setError("")
+                return questions;
+            }
             questions.splice(index, 1);
             return questions;
         })
@@ -56,86 +60,99 @@ const CreateSurvey = () => {
         const surveyId = await addNewSurveyService(payload);
         if (surveyId) {
             toast.success("New Survey Created", TOAST_CONFIG);
-            setTimeout(() => {navigate(`../take-survey/:${surveyId}`)}, 1000);
+            const cardData = {
+                surveyName,
+                description: surveyDescription
+            }
+            setTimeout(() => {
+                navigate(`../take-survey/${surveyId}`,{
+                    state: { cardData }
+                }
+            )} , 1000);
         } else {
             toast.error("Failed to Create Survey", TOAST_CONFIG);
         }
     }
 
     return (
-        <div className="flex justify-center min-h-screen bg-gray-50">
-            <form className="mx-4 w-1/2">
-                <div className="mt-12">
-                    <label className="font-semibold text-xl text-gray-800 mx-4">Survey Name</label>
-                    <div className="m-4">
-                        <input
-                            type="text"
-                            placeholder="Survey Name"
-                            className="w-full max-w-md px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
-                            value={surveyName}
-                            onChange={(e) => (setSurveyName(e.target.value))}
-                        />
-                    </div>
+        <div className="flex justify-center min-h-screen bg-gray-100 py-12 px-4">
+            <form className="w-full max-w-2xl bg-white p-8 rounded-2xl shadow-md">
+                {/* Survey Name */}
+                <div className="mb-8">
+                    <label className="block text-xl font-semibold text-gray-800 mb-2">Survey Name</label>
+                    <input
+                        type="text"
+                        placeholder="Survey Name"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
+                        value={surveyName}
+                        onChange={(e) => setSurveyName(e.target.value)}
+                    />
                 </div>
 
-                <div className="mt-8">
-                    <label className="font-semibold text-xl text-gray-800 mx-4">Description</label>
-                    <div className="m-4">
-                        <input
-                            type="text"
-                            placeholder="Survey Description"
-                            className="w-full max-w-md px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
-                            value={surveyDescription}
-                            onChange={(e) => (setSurveyDescription(e.target.value))}
-                        />
-                    </div>
+                {/* Survey Description */}
+                <div className="mb-12">
+                    <label className="block text-xl font-semibold text-gray-800 mb-2">Description</label>
+                    <input
+                        type="text"
+                        placeholder="Survey Description"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
+                        value={surveyDescription}
+                        onChange={(e) => setSurveyDescription(e.target.value)}
+                    />
                 </div>
 
-                <div className="mt-20">
-                    { questions.map((question, index) => {
-                        return (
-                            <div key={index}>
-                                <label className="font-semibold text-xl text-gray-800 mx-4">Question { index + 1 }</label>
+                {/* Questions */}
+                <div className="space-y-8">
+                    {questions.map((question, index) => (
+                        <div key={index} className="border-b border-gray-200 pb-6">
+                            <div className="flex justify-between items-center">
+                                <label className="text-xl font-semibold text-gray-800">
+                                    Question {index + 1}
+                                </label>
                                 <button
                                     type="button"
-                                    className="m-2 bg-cyan-500 rounded-2xl"
+                                    className="text-red-500 hover:text-red-700 transition"
                                     onClick={() => removeQuestion(index)}
                                 >
-                                    <div className="px-6 text-black"> - </div>
+                                    ✕
                                 </button>
-                                <div className="m-4">
-                                    <input
-                                        type="text"
-                                        placeholder="Desription"
-                                        className="w-full max-w-md px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
-                                        value={ question.description }
-                                        onChange={(e) => handleQuestionChange(index, e.target.value)}
-                                    />
-                                </div>
                             </div>
-                        )
-                    })}
+                            <input
+                                type="text"
+                                placeholder="Description"
+                                className="mt-4 w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
+                                value={question.description}
+                                onChange={(e) => handleQuestionChange(index, e.target.value)}
+                            />
+                        </div>
+                    ))}
                 </div>
 
-                <div className="justify-between">
-                    <button
-                        className="m-2 bg-cyan-500 rounded-2xl"
-                        onClick={(e) => submitSurvey(e)}
-                    >
-                        <div className="px-6 text-black">Submit Survey</div>
-                    </button>
+                {/* Buttons */}
+                <div className="flex justify-between mt-12">
                     <button
                         type="button"
-                        className="m-2 bg-cyan-500 rounded-2xl"
+                        className="bg-blue-500 text-white font-medium px-6 py-2 rounded-xl shadow hover:bg-blue-600 transition duration-200"
                         onClick={addNewQuestion}
                     >
-                        <div className="px-6 text-black">+ Add Question</div>
+                        + Add Question
+                    </button>
+                    <button
+                        className="bg-blue-500 text-white font-medium px-6 py-2 rounded-xl shadow hover:bg-blue-600 transition duration-200"
+                        onClick={(e) => submitSurvey(e)}
+                    >
+                        Submit Survey
                     </button>
                 </div>
-                { error.length > 0 && <div className="text-red-500">{ error }</div> }
+
+                {/* Error Message */}
+                {error.length > 0 && (
+                    <div className="text-red-500 mt-6 font-medium">{error}</div>
+                )}
             </form>
         </div>
-    )
+    );
+
 
 }
 

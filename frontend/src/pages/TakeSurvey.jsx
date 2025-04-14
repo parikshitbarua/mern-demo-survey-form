@@ -1,10 +1,14 @@
 import { useParams, useNavigate } from "react-router";
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router";
 import { fetchSurveyQuestions, submitSurvey } from "../utils/services"
 import { toast } from "react-toastify";
 import { TOAST_CONFIG } from "../utils/constants";
 
 const TakeSurvey = () => {
+    const location = useLocation();
+    const { cardData } = location.state || {};
+
     const { id: surveyId} = useParams();
 
     const navigate = useNavigate();
@@ -14,7 +18,6 @@ const TakeSurvey = () => {
     const [error, setError] = useState("");
 
     useEffect(() => {
-        console.log("surveyId", surveyId);
         fetchSurveyQuestions(surveyId, setSurveyQuestions);
     }, []);
 
@@ -47,48 +50,64 @@ const TakeSurvey = () => {
     }
 
     return (
-        <div className="justify-right">
-            <form>
-                { surveyQuestions.map((question) => (
-                    <div key={ question.questionId } className="m-6 p-4 border-b-black">
-                        <label>{question.questionId + '. ' + question?.description} </label>
-                        <div>
-                            <label className="m-2">
+        <div className="flex flex-col items-center mt-20 px-4">
+            {/* Survey Title */}
+            <div className="w-full max-w-2xl text-4xl font-bold text-center">
+                {cardData.surveyName}
+            </div>
+
+            {/* Survey Description */}
+            <div className="w-full max-w-2xl text-xl font-semibold text-center mt-8">
+                {cardData.description}
+            </div>
+
+            {/* Form */}
+            <form className="w-full max-w-2xl bg-white p-6 mt-12 rounded-xl shadow-md">
+                {surveyQuestions.map((question) => (
+                    <div key={question.questionId} className="mb-6 border-b border-gray-200 pb-4">
+                        <label className="block text-lg font-medium text-gray-800 mb-2">
+                            {question.questionId + '. ' + question?.description}
+                        </label>
+                        <div className="flex space-x-6">
+                            <label className="inline-flex items-center text-gray-700">
                                 <input
                                     type="radio"
-                                    name={ question.questionId }
+                                    name={question.questionId}
                                     value="Yes"
-                                    checked={ surveyAnswers[question.questionId] === true }
-                                    onChange={ () => handleInputChange(question.questionId, true)}
-                                />{" "}
-                                Yes
+                                    checked={surveyAnswers[question.questionId] === true}
+                                    onChange={() => handleInputChange(question.questionId, true)}
+                                    className="form-radio text-blue-500 h-5 w-5"
+                                />
+                                <span className="ml-2">Yes</span>
                             </label>
-                            <label className="m-2">
+                            <label className="inline-flex items-center text-gray-700">
                                 <input
                                     type="radio"
                                     value="No"
-                                    checked={ surveyAnswers[question.questionId] === false}
-                                    onChange={ () => handleInputChange(question.questionId, false)}
-                                />{" "}
-                                No
+                                    checked={surveyAnswers[question.questionId] === false}
+                                    onChange={() => handleInputChange(question.questionId, false)}
+                                    className="form-radio text-red-500 h-5 w-5"
+                                />
+                                <span className="ml-2">No</span>
                             </label>
                         </div>
                     </div>
-
                 ))}
                 <button
-                    className="m-10 bg-cyan-500 rounded-2xl"
-                    onClick={ (e) => handleFormSubmit(e) }
+                    className="bg-blue-500 text-white font-medium px-6 py-2 rounded-xl shadow hover:bg-blue-600 transition duration-200"
+                    onClick={(e) => handleFormSubmit(e)}
                 >
-                    <div className="px-4">Submit</div>
+                    Submit
                 </button>
+
+                {error.length > 0 && (
+                    <div className="text-red-500 mt-4">{error}</div>
+                )}
             </form>
-            { error.length > 0 &&
-                (<div className="text-red-500 m-6 p-4">
-                    { error }
-                </div>)}
         </div>
-    )
+    );
+
+
 }
 
 export default TakeSurvey;

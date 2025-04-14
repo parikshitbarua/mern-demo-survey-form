@@ -2,24 +2,29 @@ import { Link } from "react-router";
 
 const SurveyCard = ({ cardData }) => {
     return (
-        <div className="m-10 p-5 bg-cyan-50 w-96 rounded-2xl justify-center relative">
-            <div className="font-bold text-2xl">{ cardData.surveyName }</div>
-            <div className="pt-5">This survey is about lorem ipsum donor cant details about the test</div>
-            <div className="mt-4 flex justify-between">
-                <Link to={`/take-survey/:${cardData._id}`}>
-                    <button className="m-2 bg-cyan-500 rounded-2xl">
-                        <div className="px-4">Take Survey</div>
+        <div className="m-4 p-6 w-full max-w-lg bg-white rounded-xl shadow-lg border border-gray-200 hover:shadow-2xl transition duration-300 ease-in-out">
+            <div className="font-semibold text-2xl text-gray-800">{ cardData.surveyName }</div>
+
+            <div className="pt-4 text-gray-600">
+                { cardData.description }
+            </div>
+
+            <div className="mt-6 flex justify-between items-center">
+                <Link to={`/take-survey/${cardData._id}`} state={{ cardData }}>
+                    <button className="px-4 py-2 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 transition duration-200">
+                        Take Survey
                     </button>
                 </Link>
-                <Link className="w-1/2" to={`/survey-results/:${cardData._id}`}>
-                    <button className="m-2 bg-cyan-500 rounded-2xl">
-                        <div className="px-4">See Results</div>
+
+                <Link to={`/survey-results/${cardData._id}`}>
+                    <button className="px-4 py-2 bg-gray-100 text-blue-600 border border-blue-500 rounded-lg shadow hover:bg-blue-50 transition duration-200">
+                        See Results
                     </button>
                 </Link>
             </div>
-
         </div>
-    )
+    );
+
 }
 
 export default SurveyCard;
