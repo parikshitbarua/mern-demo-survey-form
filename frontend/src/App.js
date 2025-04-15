@@ -3,6 +3,7 @@ import SurveyCards from "./components/SurveyCards";
 import Body from "./components/Body";
 import TakeSurvey from "./pages/TakeSurvey";
 import CreateSurvey from "./pages/CreateSurvey";
+import SurveyResults from "./pages/SurveyResults";
 
 function App() {
     const appRouter = createBrowserRouter([
@@ -15,12 +16,16 @@ function App() {
                     element: <SurveyCards />
                 },
                 {
-                    path: 'take-survey/:id',
+                    path: '/take-survey/:id',
                     element: <TakeSurvey />
                 },
                 {
                     path: '/create',
                     element: <CreateSurvey />
+                },
+                {
+                    path: 'survey-result/:id',
+                    element: <SurveyResults />
                 }
             ]
         }

@@ -1,22 +1,34 @@
-import { API_URL } from "./constants";
+import {API_URL} from "./constants";
 
-export const fetchCardDetails = async (setter) => {
+export const fetchCardDetails = async () => {
     try {
         const res = await fetch(`${API_URL}/getSurveys`);
         const json = await res.json();
-        setter(json.data);
+        return json.data;
     } catch(err) {
         console.log("Error fetching details", err);
+        return null;
     }
 }
 
-export const fetchSurveyQuestions = async (surveyId, setter) => {
+export const fetchSurveyQuestions = async (surveyId) => {
     try {
         const res =  await fetch(`${API_URL}/getSurveyQuestions/:${surveyId}`);
         const json = await res.json();
-        setter(json.data);
+        return json.data;
     } catch(err) {
         console.log("Error in fetching questions", err);
+        return null;
+    }
+}
+
+export const fetchSurveyResultsService = async(surveyId) => {
+    try {
+        const res = await fetch(`${API_URL}/:${surveyId}/results`);
+        return await res.json();
+    } catch(err) {
+        console.log("eror fetching results", err);
+        return null;
     }
 }
 

@@ -18,7 +18,15 @@ const TakeSurvey = () => {
     const [error, setError] = useState("");
 
     useEffect(() => {
-        fetchSurveyQuestions(surveyId, setSurveyQuestions);
+        const fetch = async () => {
+            const questions =  await fetchSurveyQuestions(surveyId);
+            if (questions) {
+                setSurveyQuestions(questions);
+            } else {
+                setError("Failed to load questions");
+            }
+        }
+        fetch();
     }, []);
 
     const handleInputChange = (questionID, value) => {
@@ -43,7 +51,7 @@ const TakeSurvey = () => {
         try {
             await submitSurvey(surveyId,payload);
             toast.success('Response added successfully!',TOAST_CONFIG);
-            setTimeout(() => navigate('/'), 1000);
+            setTimeout(() => navigate(`../survey-result/${surveyId}`), 1000);
         } catch(err) {
             toast.error(err.toString(),TOAST_CONFIG);
         }
