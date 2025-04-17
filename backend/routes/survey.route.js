@@ -4,16 +4,17 @@ import mongoose from "mongoose";
 import { formatSurveyQuestionsForCreation } from "../utils/format-survey-details.util.js";
 import { formatSurveyResponses } from "../utils/format-survey-responses.util.js";
 import { addNewSurvey, addSurveyResponses, getAllSurveys } from "../data-access/surveys.data-access.js";
-import {addQuestionsForSurvey, getSurveyQuestions} from "../data-access/questions.data-access.js";
+import { addQuestionsForSurvey, getSurveyQuestions } from "../data-access/questions.data-access.js";
 import { getSurveyResults } from "../utils/get-survey-results.util.js";
+import { validateTokenMiddleware } from "../utils/middleware/auth.middleware.js";
 
 const router = Router();
 
-router.get('/', (req, res) => {
+router.get('/', validateTokenMiddleware, (req, res) => {
     res.status(200).send({
         message: "Hello"
     })
-})
+});
 
 // add a new survey
 router.post('/', async (req, res) => {

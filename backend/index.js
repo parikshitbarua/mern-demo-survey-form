@@ -3,6 +3,7 @@ import bodyParser from "body-parser";
 import cors from "cors";
 
 import surveyRouter from "./routes/survey.route.js";
+import authRouter from "./routes/auth.route.js";
 import { initDb } from "./connections/db.connection.js";
 
 const app = Express();
@@ -16,6 +17,7 @@ app.use(cors({
     credentials: true
 }));
 
+app.use('/auth', authRouter);
 app.use('/v1/survey', surveyRouter);
 
 const db = await initDb();
