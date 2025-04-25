@@ -22,12 +22,17 @@ const SurveyCards = () => {
     },[]);
 
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-6 px-4 py-8 justify-items-center min-h-screen bg-gray-50">
-            { message.length > 0 && message !== "" ? <div className="flex justify-center">{ message }</div> : ""}
-        {cardDetails.map((cardData) => (
-                <SurveyCard key={cardData._id} cardData={cardData} />
-            ))}
-        </div>
+        <>
+            { message.length > 0 && message !== "" ? (
+                <div className="flex justify-center items-center h-screen">{ message }</div>
+            ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-6 px-4 py-8 justify-items-center min-h-screen-20 bg-gray-50">
+                    {cardDetails.map((cardData) => (
+                        <SurveyCard key={cardData._id} cardData={cardData} />
+                    ))}
+                </div>
+            )}
+        </>
     );
 
 }
