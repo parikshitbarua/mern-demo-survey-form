@@ -28,8 +28,11 @@ const SurveyResults = () => {
                     }
                 });
             }
+        } 
+        if (setSurveyDetails != null && setSurveyQuestionsBreakUp != null) {     
+            fetchSurveyResults();
         }
-        fetchSurveyResults();
+
     },[])
 
     return (
@@ -61,8 +64,8 @@ const SurveyResults = () => {
                 </div>
             </div>
 
-            { surveyQuestionsBreakUp.map((surveyQuestion) => {
-                return (<div className="w-full bg-white border border-gray-200 shadow-sm rounded-xl p-6 mt-4">
+            { surveyQuestionsBreakUp!= null && surveyQuestionsBreakUp.map((surveyQuestion) => {
+                return (<div className="w-full bg-white border border-gray-200 shadow-sm rounded-xl p-6 mt-4" key={ surveyQuestion?.questionId }>
                     {/* Row 3 - Question (Less emphasized) */}
                     <div className="flex justify-center">
                         <div className="text-lg font-medium text-gray-800">

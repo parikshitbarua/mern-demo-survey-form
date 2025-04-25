@@ -22,8 +22,8 @@ app.use('/v1/survey', surveyRouter);
 
 const db = await initDb();
 if (db) {
-  app.listen(8080, () => {
-  console.log("Server started on http://localhost:8080");
+  app.listen(4000, () => {
+  console.log("Server started on http://localhost:4000");
  });
 } else {
   console.log("Database connection failed");
