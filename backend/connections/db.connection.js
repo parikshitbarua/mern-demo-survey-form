@@ -1,4 +1,7 @@
 import mongoose from "mongoose";
+import dotenv from "dotenv";
+
+dotenv.config();
 // import mongodb from "mongodb";
 //
 // const MongoClient = mongodb.MongoClient;
@@ -25,7 +28,7 @@ const initDb = async () => {
         return _db;
     }
     try {
-        _db = await mongoose.connect('mongodb://127.0.0.1:27017/survey?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.4.2');
+        _db = await mongoose.connect(process.env.MONGO_URI);
         console.log("Db Connected Successfully");
         return _db;
     } catch (err) {
