@@ -21,7 +21,7 @@ export const data = [
     }
 ];
 
-export const API_URL = "http://localhost:8080/v1/survey";
+export const SURVEY_API_URL = "http://localhost:4000/v1/survey";
 
 export const TOAST_CONFIG = {
     position: "top-right",

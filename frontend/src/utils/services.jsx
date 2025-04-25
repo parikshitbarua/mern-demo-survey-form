@@ -1,8 +1,8 @@
-import {API_URL} from "./constants";
+import { SURVEY_API_URL } from "./constants";
 
 export const fetchCardDetails = async () => {
     try {
-        const res = await fetch(`${API_URL}/getSurveys`);
+        const res = await fetch(`${SURVEY_API_URL}/getSurveys`);
         const json = await res.json();
         return json.data;
     } catch(err) {
@@ -13,7 +13,7 @@ export const fetchCardDetails = async () => {
 
 export const fetchSurveyQuestions = async (surveyId) => {
     try {
-        const res =  await fetch(`${API_URL}/getSurveyQuestions/:${surveyId}`);
+        const res =  await fetch(`${SURVEY_API_URL}/getSurveyQuestions/:${surveyId}`);
         const json = await res.json();
         return json.data;
     } catch(err) {
@@ -24,7 +24,7 @@ export const fetchSurveyQuestions = async (surveyId) => {
 
 export const fetchSurveyResultsService = async(surveyId) => {
     try {
-        const res = await fetch(`${API_URL}/:${surveyId}/results`);
+        const res = await fetch(`${SURVEY_API_URL}/:${surveyId}/results`);
         return await res.json();
     } catch(err) {
         console.log("eror fetching results", err);
@@ -34,7 +34,7 @@ export const fetchSurveyResultsService = async(surveyId) => {
 
 export const addNewSurveyService = async (payload) => {
     try {
-        const res = await fetch(`${API_URL}`, {
+        const res = await fetch(`${SURVEY_API_URL}`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -50,7 +50,7 @@ export const addNewSurveyService = async (payload) => {
 }
 
 export const submitSurvey = async(surveyId, payload) => {
-    const res = await fetch(`${API_URL}/:${surveyId}`, {
+    const res = await fetch(`${SURVEY_API_URL}/:${surveyId}`, {
         method: "POST",
         headers: {
             'Content-Type': 'application/json'

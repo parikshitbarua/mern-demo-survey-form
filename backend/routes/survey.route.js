@@ -7,6 +7,7 @@ import { addNewSurvey, addSurveyResponses, getAllSurveys } from "../data-access/
 import { addQuestionsForSurvey, getSurveyQuestions } from "../data-access/questions.data-access.js";
 import { getSurveyResults } from "../utils/get-survey-results.util.js";
 import { validateTokenMiddleware } from "../utils/middleware/auth.middleware.js";
+import logger from "../log/logManger.js";
 
 const router = Router();
 
@@ -105,11 +106,12 @@ router.post('/:id', async (req, res) => {
 router.get('/:id/results', async (req, res) => {
     try {
         const surveyId = new mongoose.Types.ObjectId(req.params.id.substring(1));
+        logger.info("Getting survey results for SurveyID: " + req.params.id.substring(1), { userId: 49, route: "/v1/survey/:id/results" });
         const results = await getSurveyResults(surveyId);
-
+        logger.info("Results fetched successfully for SurveyID: " + req.params.id.substring(1), { userId: 49, route: "/v1/survey/:id/results" });
         res.status(200).send(results);
     } catch(err) {
-        console.log("Error while getting survey results", err);
+        logger.error("Error fetching survey results for SurveyID: " + req.params.id.substring(1), { userId: 49, route: "/v1/survey/:id/results", errorCode: 500, stack: err.stack });
         res.status(500).send({
             success: false,
             message: "Error while getting survey results: " + err,
