@@ -1,9 +1,11 @@
 import { getSurveyQuestions } from "../data-access/questions.data-access.js";
 import { v4 as uuidv4 } from 'uuid';
+import logger from "../log/logManger.js";
 
 export const formatSurveyResponses = async (surveyId, responses) => {
     const surveyResponseId = uuidv4();
     const surveyQuestions = await getSurveyQuestions(surveyId);
+    logger.debug("format-survey-responses.util.js :: formatSurveyResponses : Formatting survey response", { userId: 49, route: "/v1/survey/:id" });
 
     if (surveyQuestions.length === 0) {
         throw Error("No questions found for the given survey");

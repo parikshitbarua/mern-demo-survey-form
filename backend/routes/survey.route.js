@@ -13,8 +13,8 @@ const router = Router();
 
 router.get('/', validateTokenMiddleware, (req, res) => {
     res.status(200).send({
-        message: "Hello"
-    })
+        message: "Hello, welcome to the EZSurvey API"
+    });
 });
 
 // add a new survey
@@ -23,8 +23,10 @@ router.post('/', async (req, res) => {
         const surveyName = req.body.surveyName;
         const description = req.body.surveyDescription;
         const questions = req.body.questions;
+        logger.info("survey.route.js : Adding a new survey: " + surveyName, { userId: 49, route: "/v1/survey" });
 
         if (!surveyName || questions?.length < 1) {
+            logger.info("Invalid request:", { userId: 49, route: "/v1/survey" });
             res.status(400).send({
                 success: false,
                 message: "Invalid request body",
@@ -59,7 +61,7 @@ router.post('/', async (req, res) => {
                 questions: null
             });
         }
-
+        logger.info("survey.route.js :: survey added : surveyId: " + surveyId, { userId: 49, route: "/v1/survey" });
         res.status(201).send({
             survey_id : surveyId.toString(),
             surveyName,
@@ -71,7 +73,9 @@ router.post('/', async (req, res) => {
             })
         });
     } catch(err) {
-        console.log("Error occured while adding a new survey", err);
+        logger.error("survey.route.js :: Error adding a survey, surveyName",
+            { userId: 49, route: "/v1/survey", errorCode: 500, stack: err.stack }
+        );
         res.status(500).send({
             success: false,
             message: "Error occured while adding a new survey",
@@ -84,8 +88,9 @@ router.post('/', async (req, res) => {
 
 // add survey responses
 router.post('/:id', async (req, res) => {
+    const surveyId = new mongoose.Types.ObjectId(req.params.id.substring(1));
     try {
-        const surveyId = new mongoose.Types.ObjectId(req.params.id.substring(1));
+        logger.info("survey.route.js :: Adding a new response for surveyId: " + surveyId, { userId: 49, route: "/v1/survey/:id" });
         const surveyResponses = req.body;
 
         const formattedResponses = await formatSurveyResponses(surveyId, surveyResponses);
@@ -95,6 +100,9 @@ router.post('/:id', async (req, res) => {
             success: true
         })
     } catch(err) {
+        logger.error("survey.route.js :: Error adding survey responses for surveyId: " + surveyId,
+            { userId: 49, route: "/v1/survey/:id", errorCode: 500, stack: err.stack }
+        );
         res.status(500).send({
             success: false,
             message: "Error while adding survey responses: " + err,
@@ -106,12 +114,14 @@ router.post('/:id', async (req, res) => {
 router.get('/:id/results', async (req, res) => {
     try {
         const surveyId = new mongoose.Types.ObjectId(req.params.id.substring(1));
-        logger.info("Getting survey results for SurveyID: " + req.params.id.substring(1), { userId: 49, route: "/v1/survey/:id/results" });
+        logger.info("survey.route.js :: Getting survey results for SurveyID: " + req.params.id.substring(1), { userId: 49, route: "/v1/survey/:id/results" });
         const results = await getSurveyResults(surveyId);
-        logger.info("Results fetched successfully for SurveyID: " + req.params.id.substring(1), { userId: 49, route: "/v1/survey/:id/results" });
+        logger.info("survey.route.js :: Results fetched successfully for SurveyID: " + req.params.id.substring(1), { userId: 49, route: "/v1/survey/:id/results" });
         res.status(200).send(results);
     } catch(err) {
-        logger.error("Error fetching survey results for SurveyID: " + req.params.id.substring(1), { userId: 49, route: "/v1/survey/:id/results", errorCode: 500, stack: err.stack });
+        logger.error("survey.route.js :: Error fetching survey results for SurveyID: " + req.params.id.substring(1),
+            { userId: 49, route: "/v1/survey/:id/results", errorCode: 500, stack: err.stack }
+        );
         res.status(500).send({
             success: false,
             message: "Error while getting survey results: " + err,
@@ -122,11 +132,15 @@ router.get('/:id/results', async (req, res) => {
 // get all surveys
 router.get('/getSurveys', async (req, res) => {
     try {
+        logger.info("survey.route.js :: Getting all surveys", { userId: 49, route: "/v1/survey/getSurveys"});
         const allSurveys =  await getAllSurveys();
         res.status(200).send({
             data: allSurveys
         });
     } catch (err) {
+        logger.error("survey.route.js :: Error fetching surveys",
+            { userId: 49, route: "/v1/survey/getSurveys", errorCode: 500, stack: err.stack }
+        );
         res.status(500).send({
             success: false,
             message: "Error while getting survey results: " + err,
@@ -138,12 +152,15 @@ router.get('/getSurveys', async (req, res) => {
 router.get('/getSurveyQuestions/:id', async (req, res) => {
     try {
         const surveyId = new mongoose.Types.ObjectId(req.params.id.substring(1));
+        logger.info("survey.route.js :: Getting survey questions for surveyId: " + surveyId, { userId: 49, route: "/v1/survey/getSurveyQuestions/:id"});
         const surveyQuestions = await getSurveyQuestions(surveyId);
         res.status(200).send({
             data: surveyQuestions
         })
     } catch(err) {
-        console.log(err);
+        logger.error("survey.route.js :: Error fetching surveys questions",
+            { userId: 49, route: "/v1/survey/getSurveyQuestions/:id", errorCode: 500, stack: err.stack }
+        );
         res.status(500).send({
             success: false,
             message: "Error while getting survey results: " + err,
