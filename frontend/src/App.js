@@ -4,6 +4,7 @@ import Body from "./components/Body";
 import TakeSurvey from "./pages/TakeSurvey";
 import CreateSurvey from "./pages/CreateSurvey";
 import SurveyResults from "./pages/SurveyResults";
+import Login from "./pages/Login";
 
 function App() {
     const appRouter = createBrowserRouter([
@@ -26,6 +27,10 @@ function App() {
                 {
                     path: 'survey-result/:id',
                     element: <SurveyResults />
+                },
+                {
+                    path: '/login',
+                    element: <Login />
                 }
             ]
         }
